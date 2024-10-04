@@ -1,11 +1,17 @@
+import { LaptopOutlined } from "@ant-design/icons";
+import { createElement, ReactNode } from "react";
 import { RouteObject } from "react-router-dom";
 import { DashboardPage } from "../pages";
 
-const routes: RouteObject[] = [
+type iRoute = RouteObject & { label: string; key: string; icon?: ReactNode };
+
+const mainRoutes: iRoute[] = [
   {
-    path: "/",
+    key: "",
     element: <DashboardPage />,
+    label: "داشبورد",
+    icon: createElement(LaptopOutlined),
   },
 ];
 
-export default routes;
+export default mainRoutes;
