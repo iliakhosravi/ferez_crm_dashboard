@@ -1,15 +1,14 @@
-import { Layout, Menu, MenuProps, theme } from "antd";
-import { FC, ReactNode } from "react";
+import { Button, Drawer, Layout, Menu, MenuProps, theme } from "antd";
+import { FC, ReactNode, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import mainRoutes from "../routers/mainRoutes";
+import { MenuOutlined } from "@ant-design/icons";
 
-const { Content, Sider } = Layout;
+const { Content } = Layout;
 
 interface iMainLayoutProps {
   children: ReactNode;
 }
-
-const items: MenuProps["items"] = mainRoutes;
 
 const MainLayout: FC<iMainLayoutProps> = ({ children }) => {
   const {
@@ -20,21 +19,66 @@ const MainLayout: FC<iMainLayoutProps> = ({ children }) => {
 
   const location = useLocation();
 
+  const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false);
+
+  const openDrawer = () => {
+    setDrawerIsOpen(true);
+  };
+
+  const closeDrawer = () => {
+    setDrawerIsOpen(false);
+  };
+
   const handleMenuItemSelect: MenuProps["onSelect"] = ({ key }) => {
+    closeDrawer();
+    if (key === "logout") {
+      localStorage.removeItem("token");
+      navigate("/login");
+      return;
+    }
     navigate(key);
   };
 
   return (
     <Layout dir="rtl" style={{ minHeight: "100vh" }}>
-      <Sider width={200} style={{ background: colorBgContainer }}>
+      <Drawer
+        closable={false}
+        placement="right"
+        open={drawerIsOpen}
+        onClose={closeDrawer}
+        width={250}
+      >
         <Menu
           mode="inline"
           selectedKeys={[location.pathname.slice(1)]}
           style={{ height: "100%" }}
-          items={items}
           onSelect={handleMenuItemSelect}
-        />
-      </Sider>
+        >
+          {mainRoutes.map((route) => (
+            <Menu.Item
+              key={route.key}
+              icon={route.icon}
+              danger={route.key === "logout"}
+            >
+              {route.label}
+            </Menu.Item>
+          ))}
+        </Menu>
+      </Drawer>
+      <Button
+        onClick={openDrawer}
+        size="large"
+        type="primary"
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          zIndex: 1000,
+        }}
+        shape="circle"
+      >
+        <MenuOutlined />
+      </Button>
       <Layout style={{ padding: "24px" }}>
         <Content
           style={{
