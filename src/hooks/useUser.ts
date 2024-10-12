@@ -15,7 +15,7 @@ const useUser = () => {
   const login = useCallback((phone: string) => {
     return new Promise((resolve, reject) => {
       axios
-        .post("/client/login", {
+        .post("/industrial/login", {
           phone,
         })
         .then((res) => {

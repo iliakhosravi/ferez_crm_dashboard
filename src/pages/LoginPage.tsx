@@ -1,17 +1,23 @@
 import { KeyOutlined, PhoneOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUser } from "../hooks";
 import "../styles/loginPage.css";
-import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [sent, setSent] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
-
   const { login, verify } = useUser();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const onFinish = ({ phone, code }: { phone: string; code: number }) => {
     const tempPhone = `+98${phone}`;
