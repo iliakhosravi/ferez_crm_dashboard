@@ -14,6 +14,7 @@ const Category: FC<{ category: iCategory }> = ({ category }) => {
           <EditOutlined />
         </Button>,
       ]}
+      style={{ minWidth: "250px" }}
     >
       <Flex vertical align="center" gap={20}>
         <h3>{category.name}</h3>
