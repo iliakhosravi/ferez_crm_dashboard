@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://api.ferez.net/api/service/v1",
+  baseURL: "https://service.ferez.net/api/service/v1",
   headers: {
     "Content-Type": "application/json",
   },
@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const temp = config;
-    const access = localStorage.getItem("access_token");
+    const access = localStorage.getItem("token");
     if (access) {
       temp.headers.Authorization = `Bearer ${access}`;
     }
@@ -26,6 +26,10 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
+    if (error.response?.status === 500) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
     return Promise.reject(error);
   }
 );
