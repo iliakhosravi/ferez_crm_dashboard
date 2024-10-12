@@ -1,4 +1,4 @@
-import { KeyOutlined, PhoneOutlined } from "@ant-design/icons";
+import { PhoneOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +42,10 @@ const Login = () => {
     }
   };
 
+  const handleChangeNumber = () => {
+    setSent(false);
+  };
+
   return (
     <div className="login-container">
       <Form
@@ -58,7 +62,27 @@ const Login = () => {
             alignItems: "flex-end",
           }}
         >
-          <span>:شماره تلفن</span>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            {sent ? (
+              <Button
+                type="link"
+                style={{ padding: 0 }}
+                onClick={handleChangeNumber}
+              >
+                تغییر شماره
+              </Button>
+            ) : (
+              <div />
+            )}
+            <span>:شماره تلفن</span>
+          </div>
           <Form.Item name="phone" layout="vertical" style={{ width: "100%" }}>
             <Input
               disabled={sent}
@@ -81,7 +105,7 @@ const Login = () => {
                 layout="vertical"
                 style={{ width: "100%" }}
               >
-                <Input prefix={<KeyOutlined />} />
+                <Input.OTP length={5} />
               </Form.Item>
             </>
           )}
