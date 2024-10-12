@@ -59,6 +59,7 @@ const MainLayout: FC<iMainLayoutProps> = ({ children }) => {
               key={route.key}
               icon={route.icon}
               danger={route.key === "logout"}
+              dir="rtl"
             >
               {route.label}
             </Menu.Item>
