@@ -1,9 +1,15 @@
 import {
+  BarChartOutlined,
+  BulbOutlined,
+  CustomerServiceOutlined,
   DashboardOutlined,
+  DollarOutlined,
   FolderOutlined,
+  GiftOutlined,
   InfoCircleOutlined,
   LogoutOutlined,
   ProductOutlined,
+  TagOutlined,
 } from "@ant-design/icons";
 import { createElement, ReactNode } from "react";
 import { RouteObject } from "react-router-dom";
@@ -12,6 +18,12 @@ import {
   CategoriesPage,
   DashboardPage,
   ProductsPage,
+  SpecialProductsPage,
+  SpecialSalePage,
+  StatsPage,
+  SuggestionsPage,
+  SupportPage,
+  TransactionsPage,
 } from "../pages";
 
 type iRoute = RouteObject & { label: string; key: string; icon?: ReactNode };
@@ -40,6 +52,42 @@ const mainRoutes: iRoute[] = [
     element: <CategoriesPage />,
     label: "دسته بندی ها",
     icon: createElement(FolderOutlined),
+  },
+  {
+    key: "special-sale",
+    element: <SpecialSalePage />,
+    label: "فروش ویژه",
+    icon: createElement(TagOutlined),
+  },
+  {
+    key: "special-products",
+    element: <SpecialProductsPage />,
+    label: "محصولات نمونه",
+    icon: createElement(GiftOutlined),
+  },
+  {
+    key: "support",
+    element: <SupportPage />,
+    label: "ارتباط با پشتیبانی",
+    icon: createElement(CustomerServiceOutlined),
+  },
+  {
+    key: "transactions",
+    element: <TransactionsPage />,
+    label: "لیست تراکنش ها",
+    icon: createElement(DollarOutlined),
+  },
+  {
+    key: "stats",
+    element: <StatsPage />,
+    label: "تحلیل ها و آمار بازدید",
+    icon: createElement(BarChartOutlined),
+  },
+  {
+    key: "suggestions",
+    element: <SuggestionsPage />,
+    label: "پیشنهادات فرز",
+    icon: createElement(BulbOutlined),
   },
   {
     key: "logout",
