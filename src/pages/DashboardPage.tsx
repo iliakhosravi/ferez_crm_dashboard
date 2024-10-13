@@ -30,16 +30,15 @@ const DashboardPage: FC = () => {
     setEditModalIsOpen(false);
   };
 
-
-  const brandDetails=[
-    { label: "آدرس", key: brand?.address },
-    // { label: "شماره تماس", key: "tell" },
-    // { label: "ایمیل", key: "email" },
-    // { label: "تلگرام", key: "telegram" },
-    // { label: "واتساپ", key: "whatsapp" },
-    // { label: "وب سایت", key: "site" },
-    // { label: "اینستاگرام", key: "instagram" },
-    // { label: "لینکدین", key: "linkedin" },
+  const brandDetails = [
+    { label: "آدرس", key: "address" },
+    { label: "شماره تماس", key: "tell" },
+    { label: "ایمیل", key: "email" },
+    { label: "تلگرام", key: "telegram" },
+    { label: "واتساپ", key: "whatsapp" },
+    { label: "وب سایت", key: "site" },
+    { label: "اینستاگرام", key: "instagram" },
+    { label: "لینکدین", key: "linkedin" },
   ];
 
   return (
@@ -51,7 +50,7 @@ const DashboardPage: FC = () => {
             initialValues={brand || {}}
             onFinish={submitEditBrand}
             layout="vertical"
-            style={{ textAlign: "right"}}
+            style={{ textAlign: "right" }}
           >
             <Form.Item
               label="نام برند"
@@ -137,7 +136,7 @@ const DashboardPage: FC = () => {
         <div
           style={{
             display: "flex",
-            flexDirection:"column",
+            flexDirection: "column",
             justifyContent: "space-between",
             alignItems: "end",
           }}
@@ -160,20 +159,17 @@ const DashboardPage: FC = () => {
             </div>
           </div>
 
-          
-        {/* Render Brand Details using map */}
-        <div>
-          {brandDetails.map(({ label, key }) => (
-            <span
-              key={key}
-              style={{ display: "flex", gap: "8px", alignItems: "center" }}
-            >
-              <h4>{label}:</h4>
-              <p>{brand?.[key]}</p>
-            </span>
-          ))}
-        </div>
-          
+          <div>
+            {brandDetails.map(({ label, key }) => (
+              <span
+                key={key}
+                style={{ display: "flex", gap: "8px", alignItems: "center" }}
+              >
+                <h4>{label}:</h4>
+                <p>{brand?.[key as keyof iBrand]}</p>
+              </span>
+            ))}
+          </div>
         </div>
       )}
     </section>
