@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -23,6 +24,10 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
+    if (response.config.url === "/client/verify" && !response.data.status) {
+      message.error(response.data.message);
+      throw Error(response.data.message);
+    }
     return response;
   },
   (error) => {
