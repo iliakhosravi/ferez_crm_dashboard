@@ -31,6 +31,7 @@ const DashboardPage: FC = () => {
   };
 
   const brandDetails = [
+    { label: "درباره ما", key: "description" },
     { label: "آدرس", key: "address" },
     { label: "شماره تماس", key: "tell" },
     { label: "ایمیل", key: "email" },
@@ -147,26 +148,41 @@ const DashboardPage: FC = () => {
               ویرایش اطلاعات برند
             </Button>
           </div>
-          <div style={{ display: "flex", gap: "20px" }}>
+          <div style={{
+             display: "flex",
+             width:"85vw",
+              gap: "20px" ,
+               
+                alignContent:"center", 
+                alignItems:"center",
+                justifyContent:"start"}}>
             <img
               src={brand?.cdn_image}
               alt={brand?.name}
               style={{ maxHeight: "200px" }}
             />
-            <div>
-              <h1>{brand?.name}</h1>
-              <p style={{ marginRight: "10px" }}>{brand?.description}</p>
-            </div>
+            <h1>{brand?.name}</h1>
+
           </div>
 
           <div>
             {brandDetails.map(({ label, key }) => (
               <span
                 key={key}
-                style={{ display: "flex", gap: "8px", alignItems: "center" }}
+                style={{ 
+                  display: "flex",
+                   gap: "8px", 
+                   alignItems: "center", 
+                    backgroundColor: "#f5f5f5",
+                    padding: '16px',
+                    margin: "8px",
+                    borderRadius: "8px"
+                  }}
               >
                 <h4>{label}:</h4>
-                <p>{brand?.[key as keyof iBrand]}</p>
+                <p
+                style={{color: (brand?.[key as keyof iBrand] == null)?"red":"black"}}
+                >{(brand?.[key as keyof iBrand] == null)? 'ثبت نشده':brand?.[key as keyof iBrand]}</p>
               </span>
             ))}
           </div>
