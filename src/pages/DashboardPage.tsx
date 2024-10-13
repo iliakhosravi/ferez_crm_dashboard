@@ -30,6 +30,18 @@ const DashboardPage: FC = () => {
     setEditModalIsOpen(false);
   };
 
+
+  const brandDetails=[
+    { label: "آدرس", key: brand?.address },
+    // { label: "شماره تماس", key: "tell" },
+    // { label: "ایمیل", key: "email" },
+    // { label: "تلگرام", key: "telegram" },
+    // { label: "واتساپ", key: "whatsapp" },
+    // { label: "وب سایت", key: "site" },
+    // { label: "اینستاگرام", key: "instagram" },
+    // { label: "لینکدین", key: "linkedin" },
+  ];
+
   return (
     <section>
       <ConfigProvider direction="rtl">
@@ -39,7 +51,7 @@ const DashboardPage: FC = () => {
             initialValues={brand || {}}
             onFinish={submitEditBrand}
             layout="vertical"
-            style={{ textAlign: "right" }}
+            style={{ textAlign: "right"}}
           >
             <Form.Item
               label="نام برند"
@@ -125,10 +137,17 @@ const DashboardPage: FC = () => {
         <div
           style={{
             display: "flex",
+            flexDirection:"column",
             justifyContent: "space-between",
-            alignItems: "center",
+            alignItems: "end",
           }}
         >
+          <div>
+            <Button type="primary" onClick={handleOpenModal}>
+              <EditOutlined />
+              ویرایش اطلاعات برند
+            </Button>
+          </div>
           <div style={{ display: "flex", gap: "20px" }}>
             <img
               src={brand?.cdn_image}
@@ -140,12 +159,21 @@ const DashboardPage: FC = () => {
               <p style={{ marginRight: "10px" }}>{brand?.description}</p>
             </div>
           </div>
-          <div>
-            <Button type="primary" onClick={handleOpenModal}>
-              <EditOutlined />
-              ویرایش اطلاعات برند
-            </Button>
-          </div>
+
+          
+        {/* Render Brand Details using map */}
+        <div>
+          {brandDetails.map(({ label, key }) => (
+            <span
+              key={key}
+              style={{ display: "flex", gap: "8px", alignItems: "center" }}
+            >
+              <h4>{label}:</h4>
+              <p>{brand?.[key]}</p>
+            </span>
+          ))}
+        </div>
+          
         </div>
       )}
     </section>
