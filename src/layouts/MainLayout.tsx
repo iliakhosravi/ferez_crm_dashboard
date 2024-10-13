@@ -1,8 +1,9 @@
-import { Button, Drawer, Layout, Menu, MenuProps, theme } from "antd";
+import { Button, Drawer, Flex, Layout, Menu, MenuProps, theme } from "antd";
 import { FC, ReactNode, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import mainRoutes from "../routers/mainRoutes";
 import { MenuOutlined } from "@ant-design/icons";
+import logo from "../assets/img/logo.png";
 
 const { Content } = Layout;
 
@@ -54,6 +55,13 @@ const MainLayout: FC<iMainLayoutProps> = ({ children }) => {
           style={{ height: "100%" }}
           onSelect={handleMenuItemSelect}
         >
+          <Flex
+            justify="center"
+            align="center"
+            style={{ paddingBlock: "20px" }}
+          >
+            <img src={logo} alt="Ferez Logo" width={100} height={100} />
+          </Flex>
           {mainRoutes.map((route) => (
             <Menu.Item
               key={route.key}
