@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../hooks";
 import "../styles/loginPage.css";
+import LotilAnimation from '../assets/lotties/Animation - 1728726174132.json';
+import Lottie from 'react-lottie';
+
+import BG from '../assets/img/bg.png';
+
+ 
 
 const Login = () => {
   const [sent, setSent] = useState<boolean>(false);
@@ -46,8 +52,30 @@ const Login = () => {
     setSent(false);
   };
 
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: LotilAnimation,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
+  };
+
   return (
     <div className="login-container">
+      <div className="login-section01" style={{backgroundImage:`url(${BG})`}}>
+      <Lottie 
+	    options={defaultOptions}
+        height={400}
+        width={400}
+      />
+          </div>
+      <div className="login-section02">
+        <div className="login-section2-content">
+        به فرز خوش آمدید
+
+        </div>
       <Form
         name="login_form"
         className="login-form"
@@ -117,6 +145,8 @@ const Login = () => {
           تایید
         </Button>
       </Form>
+      </div>
+      
     </div>
   );
 };

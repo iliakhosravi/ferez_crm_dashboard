@@ -1,7 +1,44 @@
+
+
+
+
+@font-face {
+  font-family: "Medium";   /*Can be any text*/
+  font-weight: normal;
+  src: local("DanaMedium"),
+    url("../assets/fonts/DanaFaNum-Regular.ttf") format("woff");
+}
+
+@font-face {
+  font-family: "Light";   /*Can be any text*/
+  font-weight: lighter;
+  src: local("DanaLight"),
+    url("../assets/fonts/DanaFaNum-Light.ttf") format("woff");
+}
+
+@font-face {
+  font-family: "Black";   /*Can be any text*/
+  font-weight: bold;
+  src: local("DanaBlack"),
+    url("../assets/fonts/DanaFaNum-Black.ttf") format("woff");
+}
+
+@font-face {
+  font-family: "ExtraBold";   /*Can be any text*/
+  font-weight: bolder;
+  src: local("DanaExtraBold"),
+    url("../assets/fonts/DanaFaNum-ExtraBold.ttf") format("woff");
+}
+
+
 body {
   margin: 0;
+  font-family: "Medium";
 }
 
 .ant-drawer-body {
   padding: 0 !important;
 }
+
+
+
