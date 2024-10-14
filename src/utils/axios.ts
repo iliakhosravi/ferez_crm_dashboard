@@ -32,7 +32,7 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 500) {
-      localStorage.removeItem("token");
+      localStorage.clear();
       window.location.href = "/login";
     }
     return Promise.reject(error);

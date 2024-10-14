@@ -4,7 +4,7 @@ import { Button, ConfigProvider, Flex, Form, Input, Modal, Spin } from "antd";
 import { FC, useEffect, useState } from "react";
 import useBrand, { iBrand } from "../hooks/useBrand";
 
-const DashboardPage: FC = () => {
+const BrandPage: FC = () => {
   const { loading, getBrand, editBrand } = useBrand();
   const [brand, setBrand] = useState<iBrand | null>(null);
   const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>(false);
@@ -117,12 +117,7 @@ const DashboardPage: FC = () => {
               <Input placeholder="شماره واتساپ را وارد کنید" />
             </Form.Item>
 
-            <Button
-              style={{ width: "100%" }}
-              type="primary"
-              htmlType="submit"
-              // onClick={submitEditBrand}
-            >
+            <Button style={{ width: "100%" }} type="primary" htmlType="submit">
               ارسال
             </Button>
           </Form>
@@ -201,4 +196,4 @@ const DashboardPage: FC = () => {
   );
 };
 
-export default DashboardPage;
+export default BrandPage;

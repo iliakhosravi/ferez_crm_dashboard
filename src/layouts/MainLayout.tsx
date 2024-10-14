@@ -33,7 +33,7 @@ const MainLayout: FC<iMainLayoutProps> = ({ children }) => {
   const handleMenuItemSelect: MenuProps["onSelect"] = ({ key }) => {
     closeDrawer();
     if (key === "logout") {
-      localStorage.removeItem("token");
+      localStorage.clear();
       navigate("/login");
       return;
     }
@@ -79,7 +79,7 @@ const MainLayout: FC<iMainLayoutProps> = ({ children }) => {
         size="large"
         type="primary"
         style={{
-          position: "absolute",
+          position: "fixed",
           top: 10,
           right: 10,
           zIndex: 1000,

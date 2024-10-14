@@ -30,7 +30,20 @@ const useCategory = () => {
     });
   }, []);
 
-  return { loading, getCategories };
+  const addCategory = useCallback((params: iCategory) => {
+    return new Promise<iCategory>((resolve, reject) => {
+      axios
+        .post("/industrial/brand_category", params)
+        .then((res) => {
+          resolve(res.data.brand_category);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }, []);
+
+  return { loading, getCategories, addCategory };
 };
 
 export default useCategory;

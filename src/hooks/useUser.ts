@@ -40,6 +40,7 @@ const useUser = () => {
             message.success(res.data.message);
             setUser(res.data.user);
             localStorage.setItem("token", res.data.token);
+            localStorage.setItem("brand-id", res.data.user.brand);
             resolve(res.data);
           })
           .catch((err) => {
