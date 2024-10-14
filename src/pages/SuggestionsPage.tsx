@@ -1,5 +1,5 @@
+import { CampaignOutlined } from "@mui/icons-material";
 import { FC } from "react";
-
 const SuggestionsPage: FC = () => {
   return (
     <section
@@ -20,7 +20,10 @@ const SuggestionsPage: FC = () => {
         color:"#1677FF",
         borderBottom: "solid 1px #d7ebfa"
       }}>
-      پیشنهادات فرز
+        <div style={{display:"flex", gap:"8px"}}>
+        <CampaignOutlined/>
+        پیشنهادات فرز
+        </div>
             </div>
       
       <div style={{width:"100%", 

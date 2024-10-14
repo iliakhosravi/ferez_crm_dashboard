@@ -1,4 +1,5 @@
 import { EditOutlined } from "@ant-design/icons";
+import { BubbleChartOutlined } from "@mui/icons-material";
 import type { FormProps } from "antd";
 import { Button, ConfigProvider, Flex, Form, Input, Modal, Spin } from "antd";
 import { FC, useEffect, useState } from "react";
@@ -137,12 +138,28 @@ const BrandPage: FC = () => {
             alignItems: "end",
           }}
         >
-          <div>
+          <div
+            style={{
+              width: "100%",
+              height: "10vh",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontWeight: "bold",
+              color: "#1677FF",
+              borderBottom: "solid 1px #d7ebfa",
+            }}
+          >
+            <div style={{ display: "flex", gap: "8px" }}>
+              <BubbleChartOutlined />
+              اطلاعات برند
+            </div>
             <Button type="primary" onClick={handleOpenModal}>
               <EditOutlined />
               ویرایش اطلاعات برند
             </Button>
           </div>
+
           <div
             style={{
               display: "flex",

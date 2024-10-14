@@ -60,7 +60,7 @@ const MainLayout: FC<iMainLayoutProps> = ({ children }) => {
             align="center"
             style={{ paddingBlock: "20px" }}
           >
-            <img src={logo} alt="Ferez Logo" width={100} height={100} />
+            <img src={logo} alt="Ferez Logo" width={50} height={50} />
           </Flex>
           {mainRoutes.map((route) => (
             <Menu.Item

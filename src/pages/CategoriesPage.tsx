@@ -1,10 +1,10 @@
-import { FC, useEffect, useState } from "react";
-import { useCategory } from "../hooks";
+import { CategoryOutlined } from "@mui/icons-material";
 import { Button, Flex, Spin } from "antd";
-import { iCategory } from "../hooks/useCategory";
+import { FC, useEffect, useState } from "react";
 import { Category, CategoryModal } from "../components";
-import { PlusOutlined } from "@ant-design/icons";
-
+import { useCategory } from "../hooks";
+import { iCategory } from "../hooks/useCategory";
+import { PlusOutlined } from '@ant-design/icons';
 const CategoriesPage: FC = () => {
   const { getCategories, loading } = useCategory();
 
@@ -37,15 +37,27 @@ const CategoriesPage: FC = () => {
       {category !== null && (
         <CategoryModal category={category} onclose={handleClose} />
       )}
-      <Flex align="center" justify="space-between">
-        <h1>دسته بندی ها</h1>
-        <div>
-          <Button type="primary" onClick={handleAdd}>
+      <div style={{
+        width:"100%",
+        height: "10vh",
+        display:"flex",
+        justifyContent:"space-between",
+        alignItems:"center",
+        fontWeight:"bold",
+        color:"#1677FF",
+        borderBottom: "solid 1px #d7ebfa"
+      }}>
+        <div style={{display:"flex", gap:"8px"}}>
+        <CategoryOutlined/>
+          دسته بندی ها
+
+        </div>
+        <Button type="primary" onClick={handleAdd}>
             <PlusOutlined />
             ایجاد دسته بندی جدید
           </Button>
         </div>
-      </Flex>
+     
       <Flex gap={30} wrap justify="center">
         {loading ? (
           <Flex align="center" justify="center">

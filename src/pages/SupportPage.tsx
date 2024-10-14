@@ -69,8 +69,18 @@ const SupportPage: FC = () => {
   return (
     <section>
       {/* ************ Header ********************* */}
-      <div className="support-header">
-        <div style={{ display: "flex", gap: "16px" }}>
+      <div style={{
+        width:"100%",
+        height: "10vh",
+        display:"flex",
+        justifyContent:"space-between",
+        
+        alignItems:"center",
+        fontWeight:"bold",
+        color:"#1677FF",
+        borderBottom: "solid 1px #d7ebfa"
+      }}>
+       <div style={{ display: "flex", gap: "8px" }}>
           <CustomerServiceOutlined />
           پشتیبانی
         </div>
@@ -81,7 +91,8 @@ const SupportPage: FC = () => {
           <MessageOutlined />
           ایجاد تیکت جدید{" "}
         </Button>
-      </div>
+            </div>
+      
 
       {/* ********** Ticket TabBar ************************ */}
 

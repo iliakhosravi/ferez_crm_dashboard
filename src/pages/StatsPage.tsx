@@ -1,7 +1,7 @@
+import { DonutSmallOutlined } from "@mui/icons-material";
 import { FC } from "react";
-import LotilAnimation from "../assets/lotties/building.json";
 import Lottie from "react-lottie";
-
+import LotilAnimation from "../assets/lotties/building.json";
 const defaultOptions = {
   loop: true,
   autoplay: true,
@@ -31,8 +31,12 @@ const StatsPage: FC = () => {
         color:"#1677FF",
         borderBottom: "solid 1px #d7ebfa"
       }}>
-      تحلیل ها و آمار بازدید
-      </div>
+        <div style={{display:"flex", gap:"8px"}}>
+        <DonutSmallOutlined/>
+        تحلیل ها و آمار بازدید
+
+        </div>
+        </div>
       {/* <h1>تحلیل ها و آمار بازدید</h1> */}
       <Lottie options={defaultOptions} height={400} width={400} />
       <h3>تیم فرز درحال آماده سازی این صحفه میباشد.</h3>

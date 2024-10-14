@@ -2,7 +2,8 @@ import { FC, useState } from "react";
 import "../styles/transactions.css";
 import { convertToShamsi } from "../utils";
 
-import { KeyboardArrowLeft } from "@mui/icons-material";
+import { KeyboardArrowLeft, ReceiptLongOutlined } from "@mui/icons-material";
+
 
 const TransactionsPage: FC = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -81,7 +82,24 @@ const TransactionsPage: FC = () => {
 
   return (
     <section>
-      <div className="transactions-header">لیست تراکنش ها</div>
+       {/* ******** Header **************************    */}
+    <div style={{
+        width:"100%",
+        height: "10vh",
+        display:"flex",
+        justifyContent:"space-between",
+        alignItems:"center",
+        fontWeight:"bold",
+        color:"#1677FF",
+        borderBottom: "solid 1px #d7ebfa"
+      }}>
+        <div style={{display:"flex", gap:"8px"}}>
+          <ReceiptLongOutlined/>
+        لیست تراکنش ها
+
+        </div>
+    
+                </div>
 
       {/* ************** TransAction Tab Bar ************************************** */}
       <div className="transaction-TabBar">

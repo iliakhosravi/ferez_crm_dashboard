@@ -56,7 +56,7 @@ const mainRoutes: iRoute[] = [
   {
     key: "special-sale",
     element: <SpecialSalePage />,
-    label: "فروش ویژه",
+    label: " پیشنهادات ویژه",
     icon: createElement(TagOutlined),
   },
   {
