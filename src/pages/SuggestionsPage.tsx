@@ -10,8 +10,26 @@ const SuggestionsPage: FC = () => {
         alignItems: "center",
       }}
     >
-      <h1>پیشنهادات فرز</h1>
-      <h3>درحال حاضر پیشنهادی برای شما وجود ندارد...</h3>
+      <div style={{
+        width:"100%",
+        height: "10vh",
+        display:"flex",
+        justifyContent:"start",
+        alignItems:"center",
+        fontWeight:"bold",
+        color:"#1677FF",
+        borderBottom: "solid 1px #d7ebfa"
+      }}>
+      پیشنهادات فرز
+            </div>
+      
+      <div style={{width:"100%", 
+      height:"60vh", 
+      display:"flex",
+       justifyContent:"center",
+         alignItems:"center"}}>
+          درحال حاضر پیشنهادی برای شما وجود ندارد...
+      </div>
     </section>
   );
 };

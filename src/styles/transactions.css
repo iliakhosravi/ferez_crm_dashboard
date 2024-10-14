@@ -74,5 +74,50 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    transition: all ease-in 200ms;
+    cursor: pointer;
+    color: #575757;
+    font-weight: bold;
+    flex-direction: column;
 }
+
+.transition-opened-card{
+    width: 100%;
+    
+    background-color: #1677FF;
+    box-shadow: 5px 5px 0px rgba(53, 53, 53, 0.347);
+    color: #ffffff;
+    padding: 4px 16px 4px 16px;
+    border-radius: 8px;
+    direction: rtl;
+    display: flex;
+    flex-direction: column;
+   
+    align-items: center;
+    transition: all ease-in 200ms;
+    cursor: pointer;
+    
+    font-weight: bold;
+}
+
+.transaction-list-card:hover{
+    background-color: #1677FF;
+    box-shadow: 5px 5px 0px rgba(53, 53, 53, 0.347);
+    color: #ffffff;
+    
+}
+
+.transition-closed-part{
+    height: 0px;
+}
+
+.trasaction-opened-part{
+    border-top:solid 1px #aba8cd60;
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    font-weight: normal;
+}
+
+
+
