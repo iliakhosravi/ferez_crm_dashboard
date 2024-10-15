@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 const DashboardPage: FC = () => {
-  return <div>DashboardPage</div>;
+  return <section></section>;
 };
 
 export default DashboardPage;

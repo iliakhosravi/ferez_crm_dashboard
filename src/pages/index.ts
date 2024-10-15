@@ -1,1 +1,11 @@
+export { default as CategoriesPage } from "./CategoriesPage";
 export { default as DashboardPage } from "./DashboardPage";
+export { default as LoginPage } from "./LoginPage";
+export { default as ProductsPage } from "./ProductsPage";
+export { default as BrandPage } from "./BrandPage";
+export { default as SpecialProductsPage } from "./SpecialProductsPage";
+export { default as SpecialSalePage } from "./SpecialSalePage";
+export { default as StatsPage } from "./StatsPage";
+export { default as SuggestionsPage } from "./SuggestionsPage";
+export { default as SupportPage } from "./SupportPage";
+export { default as TransactionsPage } from "./TransactionsPage";
