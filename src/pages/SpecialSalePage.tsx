@@ -1,10 +1,14 @@
-import { FC,useState } from "react";
-import { Button , ConfigProvider, Form, Input, Modal,} from "antd";
+import { FC, useState } from "react";
+import { Button, ConfigProvider, Form, Input, Modal, Upload } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { AddOutlined, LocalOfferOutlined } from "@mui/icons-material";
 
 const SpecialSalePage: FC = () => {
-
   const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>(false);
+  const [fileList, setFileList] = useState([]);
+
+
+  
 
   const handleOpenModal = () => {
     setEditModalIsOpen(true);
@@ -14,15 +18,16 @@ const SpecialSalePage: FC = () => {
     setEditModalIsOpen(false);
   };
 
+  const handleUploadChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+  };
 
-  return <section>
-
-<ConfigProvider direction="rtl">
+  return (
+    <section>
+      <ConfigProvider direction="rtl">
         <Modal open={editModalIsOpen} onCancel={handleCloseModal} footer={null}>
           <Form
             name="editBrandForm"
-            // initialValues={brand || {}}
-            // onFinish={submitEditBrand}
             layout="vertical"
             style={{ textAlign: "right" }}
           >
@@ -48,35 +53,58 @@ const SpecialSalePage: FC = () => {
 
             <Form.Item
               label="قیمت قبلی"
-              name="tell"
+              name="oldPrice"
               rules={[
-                { required: true,type: "number", message: "لطفا قیمت قبلی را وارد کنید!" },
+                {
+                  required: true,
+                  message: "لطفا قیمت قبلی را وارد کنید!",
+                },
               ]}
             >
-              <Input placeholder=" قیمت قبلی را وارد کنید" />
+              <Input placeholder="قیمت قبلی را وارد کنید" />
             </Form.Item>
 
             <Form.Item
               label="قیمت جدید"
-              name="email"
+              name="newPrice"
               rules={[
-                {required: true, type: "number", message: "لطفا قیمت جدید معتبر وارد کنید!" },
+                {
+                  required: true,
+                  message: "لطفا قیمت جدید معتبر وارد کنید!",
+                },
               ]}
             >
               <Input placeholder="قیمت جدید را وارد کنید" />
             </Form.Item>
 
-            <Form.Item 
-            label="شماره تماس" 
-            name="address"
-            rules={[
-              {required: true, type: "number", message: "لطفا قیمت جدید معتبر وارد کنید!" },
-            ]}
+            <Form.Item
+              label="شماره تماس"
+              name="contact"
+              rules={[
+                {
+                  required: true,
+                  message: "لطفا شماره تماس معتبر وارد کنید!",
+                },
+              ]}
             >
               <Input placeholder="شماره تماس را وارد کنید" />
             </Form.Item>
 
-            
+            <Form.Item label="آپلود تصویر" name="upload">
+              <Upload
+                listType="picture-card"
+                fileList={fileList}
+                onChange={handleUploadChange}
+                beforeUpload={() => false} // Prevents automatic upload
+              >
+                {fileList.length >= 1 ? null : (
+                  <div>
+                    <PlusOutlined />
+                    <div style={{ marginTop: 8 }}>آپلود</div>
+                  </div>
+                )}
+              </Upload>
+            </Form.Item>
 
             <Button style={{ width: "100%" }} type="primary" htmlType="submit">
               ارسال
@@ -85,32 +113,34 @@ const SpecialSalePage: FC = () => {
         </Modal>
       </ConfigProvider>
 
- {/* ******** Header **************************    */}
-    <div style={{
-        width:"100%",
-        height: "10vh",
-        display:"flex",
-        justifyContent:"space-between",
-        alignItems:"center",
-        fontWeight:"bold",
-        color:"#1677FF",
-        borderBottom: "solid 1px #d7ebfa"
-      }}>
-       <div style={{display:"flex", gap:"8px"}}>
-        <LocalOfferOutlined/>
-       پیشنهادات ویژه
-       </div>
+      {/* ******** Header ************************** */}
+      <div
+        style={{
+          width: "100%",
+          height: "10vh",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          fontWeight: "bold",
+          color: "#1677FF",
+          borderBottom: "solid 1px #d7ebfa",
+        }}
+      >
+        <div style={{ display: "flex", gap: "8px" }}>
+          <LocalOfferOutlined />
+          پیشنهادات ویژه
+        </div>
 
-       {/* ******** Add Ticket ***************** */}
-
-       <Button type="primary" onClick={handleOpenModal} >
-          <AddOutlined/>
+        {/* ******** Add Special Sale ***************** */}
+        <Button type="primary" onClick={handleOpenModal}>
+          <AddOutlined />
           پیشنهاد ویژه جدید
         </Button>
-            </div>
+      </div>
 
-            
-  </section>;
+
+    </section>
+  );
 };
 
 export default SpecialSalePage;
