@@ -30,6 +30,23 @@ const useCategory = () => {
     });
   }, []);
 
+  const getGeneralCategories = useCallback(() => {
+    setLoading(true);
+    return new Promise<iCategory[]>((resolve, reject) => {
+      axios
+        .get("/client/category")
+        .then((res) => {
+          resolve(res.data.categories);
+        })
+        .catch((err) => {
+          reject(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    });
+  }, []);
+
   const addCategory = useCallback((params: iCategory) => {
     return new Promise<iCategory>((resolve, reject) => {
       axios
@@ -43,7 +60,7 @@ const useCategory = () => {
     });
   }, []);
 
-  return { loading, getCategories, addCategory };
+  return { loading, getCategories, getGeneralCategories, addCategory };
 };
 
 export default useCategory;

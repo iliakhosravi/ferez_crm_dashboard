@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import { axios } from "../utils";
-import { message } from "antd";
 
 export interface iProduct {
   id?: number;
@@ -37,7 +36,6 @@ const useProduct = () => {
           resolve(res.data.products.data);
         })
         .catch((err) => {
-          message.error("Failed to fetch products");
           reject(err);
         })
         .finally(() => {
@@ -52,11 +50,9 @@ const useProduct = () => {
       axios
         .post("/industrial/product", params)
         .then((res) => {
-          message.success("Product created successfully");
           resolve(res.data.product);
         })
         .catch((err) => {
-          message.error("Failed to create product");
           reject(err);
         })
         .finally(() => {
@@ -74,7 +70,6 @@ const useProduct = () => {
           resolve(res.data.product);
         })
         .catch((err) => {
-          message.error("Failed to fetch product details");
           reject(err);
         })
         .finally(() => {
@@ -89,11 +84,9 @@ const useProduct = () => {
       axios
         .post(`/industrial/product/${id}/update`, params)
         .then((res) => {
-          message.success("Product updated successfully");
           resolve(res.data.product);
         })
         .catch((err) => {
-          message.error("Failed to update product");
           reject(err);
         })
         .finally(() => {
@@ -108,11 +101,9 @@ const useProduct = () => {
       axios
         .delete(`/industrial/product/${id}`)
         .then(() => {
-          message.success("Product deleted successfully");
           resolve();
         })
         .catch((err) => {
-          message.error("Failed to delete product");
           reject(err);
         })
         .finally(() => {
@@ -127,11 +118,9 @@ const useProduct = () => {
       axios
         .delete(`/industrial/product/image/${imageId}`)
         .then(() => {
-          message.success("Image deleted successfully");
           resolve();
         })
         .catch((err) => {
-          message.error("Failed to delete image");
           reject(err);
         })
         .finally(() => {
@@ -146,11 +135,9 @@ const useProduct = () => {
       axios
         .get(`/industrial/attribute/${attributeId}/delete`)
         .then(() => {
-          message.success("Attribute deleted successfully");
           resolve();
         })
         .catch((err) => {
-          message.error("Failed to delete attribute");
           reject(err);
         })
         .finally(() => {

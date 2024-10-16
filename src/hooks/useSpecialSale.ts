@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useState } from "react";
 import { axios } from "../utils";
-import { message } from "antd";
 
 export interface iSpecialSale {
   id?: number;
@@ -15,6 +15,7 @@ export interface iSpecialSale {
   status?: string;
   count?: number;
   brand_id?: number;
+  images?: any[];
 }
 
 const useSpecialSales = () => {
@@ -42,9 +43,12 @@ const useSpecialSales = () => {
   const createSpecialSale = useCallback((params: iSpecialSale) => {
     return new Promise<iSpecialSale>((resolve, reject) => {
       axios
-        .post("industrial/special_sale", params)
+        .post("industrial/special_sale", params, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((res) => {
-          message.success("Special sale created successfully");
           resolve(res.data.special_sale);
         })
         .catch((err) => {
@@ -73,9 +77,12 @@ const useSpecialSales = () => {
   const updateSpecialSale = useCallback((id: number, params: iSpecialSale) => {
     return new Promise<iSpecialSale>((resolve, reject) => {
       axios
-        .post(`industrial/special_sale/${id}/update`, params)
+        .post(`industrial/special_sale/${id}/update`, params, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((res) => {
-          message.success("Special sale updated successfully");
           resolve(res.data.special_sale);
         })
         .catch((err) => {
@@ -89,7 +96,6 @@ const useSpecialSales = () => {
       axios
         .delete(`industrial/special_sale/${id}/`)
         .then(() => {
-          message.success("Special sale deleted successfully");
           resolve();
         })
         .catch((err) => {
@@ -103,7 +109,6 @@ const useSpecialSales = () => {
       axios
         .delete(`industrial/special_sale/image/${imageId}/delete`)
         .then(() => {
-          message.success("Special sale image deleted successfully");
           resolve();
         })
         .catch((err) => {

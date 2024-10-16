@@ -1,144 +1,129 @@
-import { FC, useState } from "react";
-import { Button, ConfigProvider, Form, Input, Modal, Upload } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AddOutlined, LocalOfferOutlined } from "@mui/icons-material";
+import { Button, ConfigProvider, Flex, message, Spin } from "antd";
+import { FC, useEffect, useState } from "react";
+import { SpecialSale, SpecialSaleModal } from "../components";
+import useSpecialSales, { iSpecialSale } from "../hooks/useSpecialSale";
 
 const SpecialSalePage: FC = () => {
-  const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>(false);
-  const [fileList, setFileList] = useState([]);
+  const {
+    getSpecialSales,
+    createSpecialSale,
+    updateSpecialSale,
+    deleteSpecialSale,
+    loading,
+    specialSales,
+  } = useSpecialSales();
+  const [modalSale, setModalSale] = useState<iSpecialSale | null>(null);
 
+  useEffect(() => {
+    getSpecialSales();
+  }, [getSpecialSales]);
 
-  
+  const handleEdit = (sale: iSpecialSale) => {
+    setModalSale(sale);
+  };
 
-  const handleOpenModal = () => {
-    setEditModalIsOpen(true);
+  const handleAdd = () => {
+    setModalSale({} as iSpecialSale);
   };
 
   const handleCloseModal = () => {
-    setEditModalIsOpen(false);
+    setModalSale(null);
+    getSpecialSales();
   };
 
-  const handleUploadChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
+  const handleSubmit = (data: iSpecialSale, fileList: any[]) => {
+    const formData = new FormData();
+
+    fileList.forEach((file) => {
+      if (file.originFileObj) {
+        formData.append("images[]", file.originFileObj);
+      }
+    });
+
+    Object.keys(data).forEach((key) => {
+      if (key !== "images") {
+        formData.append(key, data[key as keyof iSpecialSale] as string);
+      }
+    });
+
+    if (data.id) {
+      updateSpecialSale(data.id, formData as iSpecialSale)
+        .then(() => {
+          message.success("پیشنهاد ویژه به روز رسانی شد");
+          handleCloseModal();
+        })
+        .catch(() => message.error("خطایی رخ داده است"));
+    } else {
+      createSpecialSale(formData as iSpecialSale)
+        .then(() => {
+          message.success("پیشنهاد ویژه ایجاد شد");
+          handleCloseModal();
+        })
+        .catch(() => message.error("خطایی رخ داده است"));
+    }
+  };
+
+  const handleDelete = (id: number) => {
+    deleteSpecialSale(id)
+      .then(() => {
+        message.success("پیشنهاد ویژه حذف شد");
+        getSpecialSales();
+      })
+      .catch(() => message.error("خطایی رخ داده است"));
   };
 
   return (
     <section>
       <ConfigProvider direction="rtl">
-        <Modal open={editModalIsOpen} onCancel={handleCloseModal} footer={null}>
-          <Form
-            name="editBrandForm"
-            layout="vertical"
-            style={{ textAlign: "right" }}
-          >
-            <Form.Item
-              label="عنوان پیشنهاد"
-              name="name"
-              rules={[
-                { required: true, message: "لطفا عنوان پیشنهاد را وارد کنید!" },
-              ]}
-            >
-              <Input dir="rtl" placeholder="عنوان پیشنهاد را وارد کنید" />
-            </Form.Item>
+        {modalSale !== null && (
+          <SpecialSaleModal
+            sale={modalSale}
+            onClose={handleCloseModal}
+            onSubmit={handleSubmit}
+          />
+        )}
 
-            <Form.Item
-              label="توضیحات"
-              name="description"
-              rules={[
-                { required: true, message: "لطفا توضیحات را وارد کنید!" },
-              ]}
-            >
-              <Input.TextArea placeholder="توضیحات پیشنهاد را وارد کنید" />
-            </Form.Item>
-
-            <Form.Item
-              label="قیمت قبلی"
-              name="oldPrice"
-              rules={[
-                {
-                  required: true,
-                  message: "لطفا قیمت قبلی را وارد کنید!",
-                },
-              ]}
-            >
-              <Input placeholder="قیمت قبلی را وارد کنید" />
-            </Form.Item>
-
-            <Form.Item
-              label="قیمت جدید"
-              name="newPrice"
-              rules={[
-                {
-                  required: true,
-                  message: "لطفا قیمت جدید معتبر وارد کنید!",
-                },
-              ]}
-            >
-              <Input placeholder="قیمت جدید را وارد کنید" />
-            </Form.Item>
-
-            <Form.Item
-              label="شماره تماس"
-              name="contact"
-              rules={[
-                {
-                  required: true,
-                  message: "لطفا شماره تماس معتبر وارد کنید!",
-                },
-              ]}
-            >
-              <Input placeholder="شماره تماس را وارد کنید" />
-            </Form.Item>
-
-            <Form.Item label="آپلود تصویر" name="upload">
-              <Upload
-                listType="picture-card"
-                fileList={fileList}
-                onChange={handleUploadChange}
-                beforeUpload={() => false} // Prevents automatic upload
-              >
-                {fileList.length >= 1 ? null : (
-                  <div>
-                    <PlusOutlined />
-                    <div style={{ marginTop: 8 }}>آپلود</div>
-                  </div>
-                )}
-              </Upload>
-            </Form.Item>
-
-            <Button style={{ width: "100%" }} type="primary" htmlType="submit">
-              ارسال
-            </Button>
-          </Form>
-        </Modal>
-      </ConfigProvider>
-
-      {/* ******** Header ************************** */}
-      <div
-        style={{
-          width: "100%",
-          height: "10vh",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          fontWeight: "bold",
-          color: "#1677FF",
-          borderBottom: "solid 1px #d7ebfa",
-        }}
-      >
-        <div style={{ display: "flex", gap: "8px" }}>
-          <LocalOfferOutlined />
-          پیشنهادات ویژه
+        <div
+          style={{
+            width: "100%",
+            height: "10vh",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            fontWeight: "bold",
+            color: "#1677FF",
+            borderBottom: "solid 1px #d7ebfa",
+          }}
+        >
+          <div style={{ display: "flex", gap: "8px" }}>
+            <LocalOfferOutlined />
+            پیشنهادات ویژه
+          </div>
+          <Button type="primary" onClick={handleAdd}>
+            <AddOutlined />
+            پیشنهاد ویژه جدید
+          </Button>
         </div>
 
-        {/* ******** Add Special Sale ***************** */}
-        <Button type="primary" onClick={handleOpenModal}>
-          <AddOutlined />
-          پیشنهاد ویژه جدید
-        </Button>
-      </div>
-
-
+        <div style={{ marginTop: "20px" }}>
+          {loading ? (
+            <Spin size="large" />
+          ) : (
+            <Flex wrap gap={16} justify="center">
+              {specialSales.map((sale) => (
+                <SpecialSale
+                  key={sale.id}
+                  sale={sale}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </Flex>
+          )}
+        </div>
+      </ConfigProvider>
     </section>
   );
 };
