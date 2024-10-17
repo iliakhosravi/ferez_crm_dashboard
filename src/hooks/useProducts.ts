@@ -51,6 +51,29 @@ const useProduct = () => {
     });
   }, []);
 
+  const getProductsByCategory = useCallback(
+    (page: number = 1, catId: number) => {
+      setLoading(true);
+      return new Promise<iProduct[]>((resolve, reject) => {
+        axios
+          .get(`/industrial/brand_category/${catId}/products?page=${page}`)
+          .then((res) => {
+            setProducts(res.data.products.data);
+            setCurrentPage(res.data.products.current_page);
+            setTotal(res.data.products.total);
+            resolve(res.data.products.data);
+          })
+          .catch((err) => {
+            reject(err);
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      });
+    },
+    []
+  );
+
   const createProduct = useCallback((params: iProduct) => {
     setLoading(true);
     return new Promise<iProduct>((resolve, reject) => {
@@ -167,6 +190,7 @@ const useProduct = () => {
     currentPage,
     total,
     getProducts,
+    getProductsByCategory,
     createProduct,
     getProduct,
     updateProduct,
