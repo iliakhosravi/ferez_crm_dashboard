@@ -5,12 +5,14 @@ import {
 } from "@mui/icons-material";
 import { Button, ConfigProvider, Flex, message, Pagination, Spin } from "antd";
 import { FC, useEffect, useState } from "react";
-import { Product, ProductModal } from "../components";
+import { CategoryItem, Product, ProductModal } from "../components";
+import { useCategory } from "../hooks";
+import { iCategory } from "../hooks/useCategory";
 import useProduct, { iProduct } from "../hooks/useProducts";
 
 const ProductsPage: FC = () => {
   const {
-    getProducts,
+    getProductsByCategory,
     updateProduct,
     createProduct,
     products,
@@ -19,13 +21,26 @@ const ProductsPage: FC = () => {
     deleteProduct,
   } = useProduct();
 
+  const { getCategories } = useCategory();
+
+  const [categories, setCategories] = useState<iCategory[]>([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [modalProduct, setModalProduct] = useState<iProduct | null>(null);
   const [readOnly, setReadOnly] = useState<boolean>(false);
 
   useEffect(() => {
-    getProducts(currentPage);
-  }, [currentPage, getProducts]);
+    if (selectedCategoryId !== 0) {
+      getProductsByCategory(currentPage, selectedCategoryId);
+    }
+  }, [currentPage, selectedCategoryId, getProductsByCategory]);
+
+  useEffect(() => {
+    getCategories().then((res) => {
+      setCategories(res);
+      setSelectedCategoryId(res[0].id || 0);
+    });
+  }, [getCategories, getProductsByCategory]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -47,7 +62,7 @@ const ProductsPage: FC = () => {
   const handleCloseModal = () => {
     setModalProduct(null);
     setCurrentPage(1);
-    getProducts(currentPage);
+    getProductsByCategory(currentPage, selectedCategoryId);
     setReadOnly(false);
   };
 
@@ -87,9 +102,13 @@ const ProductsPage: FC = () => {
     deleteProduct(id)
       .then(() => {
         message.success("محصول حذف شد");
-        getProducts();
+        getProductsByCategory(currentPage, selectedCategoryId);
       })
       .catch(() => message.error("خطایی رخ داده است"));
+  };
+
+  const handleSelectCategory = (cat: iCategory) => {
+    setSelectedCategoryId(cat.id || 0);
   };
 
   return (
@@ -126,23 +145,38 @@ const ProductsPage: FC = () => {
           </Button>
         </div>
 
-        <div style={{ marginTop: "20px" }}>
-          {loading ? (
-            <Spin size="large" />
-          ) : (
-            <Flex wrap gap={16} justify="center">
-              {products.map((product) => (
-                <Product
-                  key={product.id}
-                  product={product}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                  onView={handleView}
-                />
-              ))}
-            </Flex>
-          )}
-        </div>
+        <Flex
+          gap={16}
+          style={{
+            width: "100%",
+            overflowX: "scroll",
+            marginBlock: 16,
+            paddingBlock: 16,
+          }}
+        >
+          {categories.map((category) => (
+            <CategoryItem
+              category={category}
+              selected={selectedCategoryId === category.id}
+              onSelect={handleSelectCategory}
+            />
+          ))}
+        </Flex>
+        {loading ? (
+          <Spin size="large" />
+        ) : (
+          <Flex wrap gap={16} justify="center">
+            {products.map((product) => (
+              <Product
+                key={product.id}
+                product={product}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onView={handleView}
+              />
+            ))}
+          </Flex>
+        )}
 
         <Flex justify="center" style={{ marginTop: "20px" }}>
           <Pagination
