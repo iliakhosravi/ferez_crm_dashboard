@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useState } from "react";
 import { axios } from "../utils";
 
@@ -16,6 +17,12 @@ export interface iProduct {
   table_name?: string;
   user_id?: number;
   status?: string;
+  images?: any[];
+  keys?: string[];
+  values?: string[];
+  first_images?: {
+    src: string;
+  };
 }
 
 const useProduct = () => {
@@ -48,7 +55,11 @@ const useProduct = () => {
     setLoading(true);
     return new Promise<iProduct>((resolve, reject) => {
       axios
-        .post("/industrial/product", params)
+        .post("/industrial/product", params, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((res) => {
           resolve(res.data.product);
         })
@@ -82,7 +93,11 @@ const useProduct = () => {
     setLoading(true);
     return new Promise<iProduct>((resolve, reject) => {
       axios
-        .post(`/industrial/product/${id}/update`, params)
+        .post(`/industrial/product/${id}/update`, params, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((res) => {
           resolve(res.data.product);
         })

@@ -2,7 +2,7 @@ import { message } from "antd";
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://service.ferez.net/api/service/v1",
+  baseURL: import.meta.env.VITE_BASE_URL + import.meta.env.VITE_PATH,
   headers: {
     "Content-Type": "application/json",
   },
@@ -31,7 +31,7 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response?.status === 500) {
+    if (error.response?.status === 401) {
       localStorage.clear();
       window.location.href = "/login";
     }

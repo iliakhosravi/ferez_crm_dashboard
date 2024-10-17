@@ -1,80 +1,87 @@
-import type { FormProps, UploadFile } from "antd";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Button,
   ConfigProvider,
   Form,
   Input,
   InputNumber,
-  message,
   Modal,
   Select,
   Upload,
 } from "antd";
 
+import { PlusOneOutlined } from "@mui/icons-material";
 import { FC, useEffect, useState } from "react";
 import useCategory, { iCategory } from "../../hooks/useCategory";
 import useProduct, { iProduct } from "../../hooks/useProducts";
-import { UploadFileOutlined } from "@mui/icons-material";
 
 const ProductModal: FC<{
   product: iProduct | null;
-  onclose: () => void;
-}> = ({ product, onclose }) => {
-  const { createProduct } = useProduct();
-  const { getCategories } = useCategory();
-
+  readOnly?: boolean;
+  onClose: () => void;
+  onSubmit: (data: iProduct, fileList: any[]) => void;
+}> = ({ product, onClose, onSubmit, readOnly = false }) => {
+  const [loadingData, setLoadingData] = useState<boolean>(false);
+  const [btnIsLoading, setBtnIsLoading] = useState<boolean>(false);
+  const [fileList, setFileList] = useState<any[]>([]);
   const [categories, setCategories] = useState<iCategory[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [form] = Form.useForm();
+
+  const { getCategories } = useCategory();
+  const { getProduct } = useProduct();
 
   useEffect(() => {
     getCategories().then((res) => setCategories(res));
-  }, [getCategories]);
 
-  const submitEditProduct: FormProps<iProduct>["onFinish"] = (values) => {
-    // setLoading(true);
+    if (JSON.stringify(product) !== JSON.stringify({})) {
+      setLoadingData(true);
+      getProduct(product?.id || 0).then((res) => {
+        const prod = res;
 
-    const formData = new FormData();
-    fileList.forEach((file) => {
-      formData.append("images[]", file.originFileObj as Blob);
-    });
+        form.setFieldsValue(prod);
 
-    Object.keys(values).forEach((key) => {
-      formData.append(key, values[key]);
-    });
+        const formattedImages = prod?.images?.map((image: any) => ({
+          uid: image.id,
+          name: `image-${image.id}`,
+          status: "done",
+          url: image.cdn_image || image.src,
+        }));
 
-    if (product && product.id) {
-      //   editProduct({ ...product, ...values }).then(() => {
-      //     message.success("محصول شما ویرایش شد");
-      //     setLoading(false);
-      //     onclose();
-      //   });
-      //   return;
+        setFileList(formattedImages as any);
+        setLoadingData(false);
+      });
     }
+  }, [product, getCategories, form, getProduct]);
 
-    createProduct(formData).then(() => {
-      message.success("محصول شما ایجاد شد");
-      setLoading(false);
-      onclose();
-    });
+  const handleUploadChange = ({ fileList: newFileList }: any) => {
+    setFileList(newFileList);
   };
 
-  const handleImageChange = ({
-    fileList: newFileList,
-  }: {
-    fileList: UploadFile[];
-  }) => {
-    setFileList(newFileList);
+  const handleFormSubmit = (values: iProduct) => {
+    const temp = JSON.parse(JSON.stringify(values));
+
+    if (product?.id) {
+      temp.id = product.id;
+    }
+
+    setBtnIsLoading(true);
+    onSubmit(temp, fileList);
+    setBtnIsLoading(false);
   };
 
   return (
     <ConfigProvider direction="rtl">
-      <Modal onCancel={onclose} footer={null}>
+      <Modal
+        open={product !== null}
+        onCancel={onClose}
+        footer={null}
+        loading={loadingData}
+      >
         <Form
+          form={form}
           name="editProductForm"
-          initialValues={product || {}}
-          onFinish={submitEditProduct}
           layout="vertical"
+          onFinish={handleFormSubmit}
           style={{ textAlign: "right" }}
         >
           <Form.Item
@@ -84,7 +91,11 @@ const ProductModal: FC<{
               { required: true, message: "لطفا نام محصول را وارد کنید!" },
             ]}
           >
-            <Input dir="rtl" placeholder="نام محصول را وارد کنید" />
+            <Input
+              disabled={readOnly}
+              dir="rtl"
+              placeholder="نام محصول را وارد کنید"
+            />
           </Form.Item>
 
           <Form.Item
@@ -98,6 +109,7 @@ const ProductModal: FC<{
             ]}
           >
             <Select
+              disabled={readOnly}
               placeholder="دسته بندی محصول را انتخاب کنید"
               loading={categories.length === 0}
               options={categories.map((category) => ({
@@ -115,6 +127,7 @@ const ProductModal: FC<{
             ]}
           >
             <Input.TextArea
+              disabled={readOnly}
               dir="rtl"
               placeholder="توضیحات محصول را وارد کنید"
             />
@@ -128,6 +141,7 @@ const ProductModal: FC<{
             ]}
           >
             <InputNumber
+              disabled={readOnly}
               style={{ width: "100%" }}
               min={0}
               placeholder="قیمت محصول را وارد کنید"
@@ -142,15 +156,24 @@ const ProductModal: FC<{
               { required: true, message: "لطفا واحد محصول را وارد کنید!" },
             ]}
           >
-            <Input dir="rtl" placeholder="واحد محصول (مثلا: کیلوگرم)" />
+            <Input
+              disabled={readOnly}
+              dir="rtl"
+              placeholder="واحد محصول (مثلا: کیلوگرم)"
+            />
           </Form.Item>
 
           <Form.Item label="لینک محصول" name="link">
-            <Input dir="rtl" placeholder="لینک محصول را وارد کنید" />
+            <Input
+              disabled={readOnly}
+              dir="rtl"
+              placeholder="لینک محصول را وارد کنید"
+            />
           </Form.Item>
 
           <Form.Item label="تخفیف محصول (%)" name="off">
             <InputNumber
+              disabled={readOnly}
               style={{ width: "100%" }}
               min={0}
               max={100}
@@ -161,23 +184,33 @@ const ProductModal: FC<{
 
           <Form.Item label="تصاویر محصول">
             <Upload
+              disabled={readOnly}
               listType="picture-card"
               fileList={fileList}
-              onChange={handleImageChange}
+              onChange={handleUploadChange}
               beforeUpload={() => false}
+              multiple
             >
-              <UploadFileOutlined />
+              {!readOnly &&
+                (fileList.length >= 5 ? null : (
+                  <div>
+                    <PlusOneOutlined />
+                    <div style={{ marginTop: 8 }}>آپلود</div>
+                  </div>
+                ))}
             </Upload>
           </Form.Item>
 
-          <Button
-            style={{ width: "100%" }}
-            type="primary"
-            htmlType="submit"
-            loading={loading}
-          >
-            {product ? "ویرایش محصول" : "ایجاد محصول"}
-          </Button>
+          {!readOnly && (
+            <Button
+              style={{ width: "100%" }}
+              type="primary"
+              htmlType="submit"
+              loading={btnIsLoading}
+            >
+              ارسال
+            </Button>
+          )}
         </Form>
       </Modal>
     </ConfigProvider>
