@@ -1,105 +1,67 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import "../styles/transactions.css";
 import { convertToShamsi } from "../utils";
 
 import { KeyboardArrowLeft, ReceiptLongOutlined } from "@mui/icons-material";
-
+import { Button, Flex } from "antd";
+import useTransaction, { iTransaction } from "../hooks/useTransaction";
 
 const TransactionsPage: FC = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const [expandCard, setExpandCard] = useState(100000000);
-  const TransactionsData = [
-    {
-      id: 0,
-      title: "خرید جایگاه",
-      description: "توضیحات خرید جایگاه",
-      cratedAt: "2024-08-10T06:15:21.000000Z",
-      paymentReciptent: "4500445522588888",
-      payAmount: "6000000",
-      status: 0,
-    },
-    {
-      id: 1,
-      title: "1خرید جایگاه",
-      description: "توضیحات خرید جایگاه",
-      cratedAt: "2024-08-10T06:15:21.000000Z",
-      paymentReciptent: "4500445522588888",
-      payAmount: "6000000",
-      status: 1,
-    },
-    {
-      id: 2,
-      title: "2خرید جایگاه",
-      description: "توضیحات خرید جایگاه",
-      cratedAt: "2024-08-10T06:15:21.000000Z",
-      paymentReciptent: "4500445522588888",
-      payAmount: "6000000",
-      status: 0,
-    },
-    {
-      id: 3,
-      title: "3خرید جایگاه",
-      description: "توضیحات خرید جایگاه",
-      cratedAt: "2024-08-10T06:15:21.000000Z",
-      paymentReciptent: "4500445522588888",
-      payAmount: "6000000",
-      status: 1,
-    },
-    {
-      id: 4,
-      title: "4خرید جایگاه",
-      description: "توضیحات خرید جایگاه",
-      cratedAt: "2024-08-10T06:15:21.000000Z",
-      paymentReciptent: "4500445522588888",
-      payAmount: "6000000",
-      status: 0,
-    },
-    {
-      id: 5,
-      title: "5خرید جایگاه",
-      description: "توضیحات خرید جایگاه",
-      cratedAt: "2024-08-10T06:15:21.000000Z",
-      paymentReciptent: "4500445522588888",
-      payAmount: "6000000",
-      status: 1,
-    },
-  ];
+  const [expandCard, setExpandCard] = useState(-1);
+  const [filteredTransactions, setFilteredTransactions] = useState<
+    iTransaction[]
+  >([]);
 
-  const filteredTransactions = TransactionsData.filter(
-    (transaction) =>
-      activeTab === 0 ||
-      (activeTab === 1 && transaction.status === 0) ||
-      (activeTab === 2 && transaction.status === 1)
-  );
+  const { transactions, getTransactions } = useTransaction();
 
- const handelExpandCard=(id:number ) => {
-    if(expandCard === id){
+  useEffect(() => {
+    getTransactions();
+  }, [getTransactions]);
+
+  useEffect(() => {
+    setFilteredTransactions(
+      transactions.filter(
+        (transaction) =>
+          activeTab === 0 ||
+          (activeTab === 1 && transaction.status === "NOK") ||
+          (activeTab === 2 && transaction.status === "OK")
+      )
+    );
+  }, [activeTab, transactions]);
+
+  const handelExpandCard = (id: number) => {
+    if (expandCard === id) {
       setExpandCard(100000000);
-    }else{
+    } else {
       setExpandCard(id);
     }
-  }
+  };
+
+  const handlePay = (id: number) => {
+    window.location.replace(`https://service.ferez.net/order/${id}`);
+  };
 
   return (
     <section>
-       {/* ******** Header **************************    */}
-    <div style={{
-        width:"100%",
-        height: "10vh",
-        display:"flex",
-        justifyContent:"space-between",
-        alignItems:"center",
-        fontWeight:"bold",
-        color:"#1677FF",
-        borderBottom: "solid 1px #d7ebfa"
-      }}>
-        <div style={{display:"flex", gap:"8px"}}>
-          <ReceiptLongOutlined/>
-        لیست تراکنش ها
-
+      {/* ******** Header **************************    */}
+      <div
+        style={{
+          width: "100%",
+          height: "10vh",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          fontWeight: "bold",
+          color: "#1677FF",
+          borderBottom: "solid 1px #d7ebfa",
+        }}
+      >
+        <div style={{ display: "flex", gap: "8px" }}>
+          <ReceiptLongOutlined />
+          لیست تراکنش ها
         </div>
-    
-                </div>
+      </div>
 
       {/* ************** TransAction Tab Bar ************************************** */}
       <div className="transaction-TabBar">
@@ -132,7 +94,7 @@ const TransactionsPage: FC = () => {
             ></path>
           </svg>
           <p>همه</p>
-          <p>26 صورتحساب</p>
+          <p>{transactions.length} صورتحساب</p>
         </div>
 
         <div
@@ -165,7 +127,13 @@ const TransactionsPage: FC = () => {
             ></path>
           </svg>
           <p>پرداخت نشده</p>
-          <p>26 صورتحساب</p>
+          <p>
+            {
+              transactions.filter((transaction) => transaction.status === "NOK")
+                .length
+            }{" "}
+            صورتحساب
+          </p>
         </div>
 
         <div
@@ -196,38 +164,75 @@ const TransactionsPage: FC = () => {
             ></path>
           </svg>
           <p>پرداخت شده</p>
-          <p>26 صورتحساب</p>
+          <p>
+            {
+              transactions.filter((transaction) => transaction.status === "OK")
+                .length
+            }{" "}
+            صورتحساب
+          </p>
         </div>
       </div>
 
       {/* *************** Transactions List *********************************      */}
       <div className="transaction-list-container">
-        {filteredTransactions.map(({ id, title, cratedAt ,description, payAmount}) => (
-          <span 
-          onClick={()=>handelExpandCard(id)}
-          className={ expandCard === id?"transition-opened-card" :"transaction-list-card"}  key={id}>
-            <div style={{display:"flex",
-                width:"100%",
-               justifyContent:"space-between",
-                alignItems:"center"}}>
-            <p >{title}</p>
-              <p>{`${payAmount} تومان`}</p>
-            <p>{convertToShamsi(cratedAt)}</p>
+        {filteredTransactions.map(
+          ({ id, created_at, description, amount, status }) => (
+            <span
+              onClick={() => handelExpandCard(id || 0)}
+              className={
+                expandCard === id
+                  ? "transition-opened-card"
+                  : "transaction-list-card"
+              }
+              key={id}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <p>{`${amount} تومان`}</p>
+                <p>{convertToShamsi(created_at || "")}</p>
 
-            <KeyboardArrowLeft 
-            style={{
-              transform: expandCard === id ? 'rotate(-90deg)' : 'rotate(0deg)',
-              transition: 'transform 0.3s ease',
-            }} />
-            </div>
+                <Flex align="center">
+                  {status === "NOK" && (
+                    <Button
+                      type="default"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePay(id || -1);
+                      }}
+                    >
+                      پرداخت
+                    </Button>
+                  )}
+                  <KeyboardArrowLeft
+                    style={{
+                      transform:
+                        expandCard === id ? "rotate(-90deg)" : "rotate(0deg)",
+                      transition: "transform 0.3s ease",
+                    }}
+                  />
+                </Flex>
+              </div>
 
-{/* *************** Opened Card *************************************************** */}
-            <div className={expandCard === id? "trasaction-opened-part": "transition-closed-part"}>
-              <p>{description}</p>
-            </div>
-
-          </span>
-        ))}
+              {/* *************** Opened Card *************************************************** */}
+              <div
+                className={
+                  expandCard === id
+                    ? "trasaction-opened-part"
+                    : "transition-closed-part"
+                }
+              >
+                <p>{description}</p>
+              </div>
+            </span>
+          )
+        )}
       </div>
     </section>
   );

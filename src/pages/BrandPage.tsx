@@ -179,7 +179,7 @@ const BrandPage: FC = () => {
             <h1>{brand?.name}</h1>
           </div>
 
-          <div>
+          <div style={{ width: "100%" }}>
             {brandDetails.map(({ label, key }) => (
               <span
                 key={key}
@@ -191,6 +191,7 @@ const BrandPage: FC = () => {
                   padding: "16px",
                   margin: "8px",
                   borderRadius: "8px",
+                  width: "100%",
                 }}
               >
                 <h4>{label}:</h4>

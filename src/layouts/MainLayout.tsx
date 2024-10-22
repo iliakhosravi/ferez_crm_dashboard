@@ -1,9 +1,9 @@
-import { Button, Drawer, Flex, Layout, Menu, MenuProps, theme } from "antd";
-import { FC, ReactNode, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import mainRoutes from "../routers/mainRoutes";
 import { MenuOutlined } from "@ant-design/icons";
+import { Button, Drawer, Flex, Layout, Menu, MenuProps, theme } from "antd";
+import { FC, ReactNode, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo.png";
+import mainRoutes from "../routers/mainRoutes";
 
 const { Content } = Layout;
 
@@ -39,6 +39,14 @@ const MainLayout: FC<iMainLayoutProps> = ({ children }) => {
     }
     navigate(key);
   };
+
+  useEffect(() => {
+    const temp = localStorage.getItem("token");
+
+    if (!temp) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   return (
     <Layout dir="rtl" style={{ minHeight: "100vh" }}>
