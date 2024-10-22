@@ -35,7 +35,7 @@ const useBrand = () => {
       axios
         .get("/industrial/profile/brand")
         .then((res) => {
-          resolve(res.data);
+          resolve(res.data.brand);
         })
         .catch((err) => {
           reject(err);
