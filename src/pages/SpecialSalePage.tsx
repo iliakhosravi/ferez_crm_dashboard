@@ -25,7 +25,7 @@ const SpecialSalePage: FC = () => {
   };
 
   const handleAdd = () => {
-    setModalSale({} as iSpecialSale);
+    setModalSale({});
   };
 
   const handleCloseModal = () => {
