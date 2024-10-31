@@ -21,25 +21,26 @@ const StatsPage: FC = () => {
         alignItems: "center",
       }}
     >
-      <div style={{
-        width:"100%",
-        height: "10vh",
-        display:"flex",
-        justifyContent:"start",
-        alignItems:"center",
-        fontWeight:"bold",
-        color:"#1677FF",
-        borderBottom: "solid 1px #d7ebfa"
-      }}>
-        <div style={{display:"flex", gap:"8px"}}>
-        <DonutSmallOutlined/>
-        تحلیل ها و آمار بازدید
-
+      <div
+        style={{
+          width: "100%",
+          height: "10vh",
+          display: "flex",
+          justifyContent: "start",
+          alignItems: "center",
+          fontWeight: "bold",
+          color: "#1677FF",
+          borderBottom: "solid 1px #d7ebfa",
+        }}
+      >
+        <div style={{ display: "flex", gap: "8px" }}>
+          <DonutSmallOutlined />
+          تحلیل ها و آمار بازدید
         </div>
-        </div>
+      </div>
       {/* <h1>تحلیل ها و آمار بازدید</h1> */}
       <Lottie options={defaultOptions} height={400} width={400} />
-      <h3>تیم فرز درحال آماده سازی این صحفه میباشد.</h3>
+      <h3>تیم فرز درحال آماده سازی این صفحه میباشد.</h3>
     </section>
   );
 };
