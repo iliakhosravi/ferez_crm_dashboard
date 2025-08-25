@@ -4,6 +4,7 @@ import { FC, ReactNode, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import mainRoutes from "../routers/mainRoutes";
+import Cookies from "js-cookie";
 
 const { Content } = Layout;
 
@@ -41,7 +42,7 @@ const MainLayout: FC<iMainLayoutProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    const temp = localStorage.getItem("token");
+    const temp = Cookies.get("token");
 
     if (!temp) {
       navigate("/login");
