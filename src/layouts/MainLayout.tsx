@@ -34,7 +34,7 @@ const MainLayout: FC<iMainLayoutProps> = ({ children }) => {
   const handleMenuItemSelect: MenuProps["onSelect"] = ({ key }) => {
     closeDrawer();
     if (key === "logout") {
-      localStorage.clear();
+      Cookies.remove('token');;
       navigate("/login");
       return;
     }
@@ -47,7 +47,7 @@ const MainLayout: FC<iMainLayoutProps> = ({ children }) => {
     if (!temp) {
       navigate("/login");
     }
-  }, [navigate]);
+  }, []);
 
   return (
     <Layout dir="rtl" style={{ minHeight: "100vh" }}>

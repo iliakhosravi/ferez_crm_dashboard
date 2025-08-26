@@ -23,7 +23,7 @@ const Login = () => {
     if (token) {
       navigate("/");
     }
-  }, [navigate]);
+  }, []);
 
   const onFinish = ({ phone, code }: { phone: string; code: number }) => {
     const tempPhone = `+98${phone}`;
