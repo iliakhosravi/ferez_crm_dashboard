@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../hooks";
 import "../styles/loginPage.css";
-import LotilAnimation from '../assets/lotties/Animation - 1728726174132.json';
-import Lottie from 'react-lottie';
-import BG from '../assets/img/bg.png';
+import LotilAnimation from "../assets/lotties/Animation - 1728726174132.json";
+import Lottie from "react-lottie";
+import BG from "../assets/img/bg.png";
 import Cookies from "js-cookie";
 
- 
-
 const Login = () => {
+  const token = Cookies.get("token");
+
   const [sent, setSent] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -19,7 +19,6 @@ const Login = () => {
   const { login, verify } = useUser();
 
   useEffect(() => {
-    const token = Cookies.get("token");
     if (token) {
       navigate("/");
     }
@@ -52,101 +51,97 @@ const Login = () => {
     setSent(false);
   };
 
-
   const defaultOptions = {
     loop: true,
     autoplay: true,
     animationData: LotilAnimation,
     rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
+      preserveAspectRatio: "xMidYMid slice",
+    },
   };
-
+  if (token) {
+    navigate("/");
+  }
   return (
     <div className="login-container">
-      <div className="login-section01" style={{backgroundImage:`url(${BG})`}}>
-      <Lottie 
-	    options={defaultOptions}
-        height={400}
-        width={400}
-      />
-          </div>
-      <div className="login-section02">
-        <div className="login-section2-content">
-        به فرز خوش آمدید
-
-        </div>
-      <Form
-        name="login_form"
-        className="login-form"
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
+      <div
+        className="login-section01"
+        style={{ backgroundImage: `url(${BG})` }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 5,
-            alignItems: "flex-end",
-          }}
+        <Lottie options={defaultOptions} height={400} width={400} />
+      </div>
+      <div className="login-section02">
+        <div className="login-section2-content">به فرز خوش آمدید</div>
+        <Form
+          name="login_form"
+          className="login-form"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
         >
           <div
             style={{
               display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
+              flexDirection: "column",
+              gap: 5,
+              alignItems: "flex-end",
             }}
           >
-            {sent ? (
-              <Button
-                type="link"
-                style={{ padding: 0 }}
-                onClick={handleChangeNumber}
-              >
-                تغییر شماره
-              </Button>
-            ) : (
-              <div />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              {sent ? (
+                <Button
+                  type="link"
+                  style={{ padding: 0 }}
+                  onClick={handleChangeNumber}
+                >
+                  تغییر شماره
+                </Button>
+              ) : (
+                <div />
+              )}
+              <span>:شماره تلفن</span>
+            </div>
+            <Form.Item name="phone" layout="vertical" style={{ width: "100%" }}>
+              <Input
+                disabled={sent}
+                prefix={
+                  <div style={{ display: "flex", gap: 5 }}>
+                    <PhoneOutlined />
+                    <span>+98 - </span>
+                  </div>
+                }
+              />
+            </Form.Item>
+
+            {sent && (
+              <>
+                <br className="loginPageLineBreak" />
+
+                <span>:کد ارسال شده </span>
+                <Form.Item
+                  name="code"
+                  layout="vertical"
+                  style={{ width: "100%" }}
+                >
+                  <Input.OTP length={5} />
+                </Form.Item>
+              </>
             )}
-            <span>:شماره تلفن</span>
           </div>
-          <Form.Item name="phone" layout="vertical" style={{ width: "100%" }}>
-            <Input
-              disabled={sent}
-              prefix={
-                <div style={{ display: "flex", gap: 5 }}>
-                  <PhoneOutlined />
-                  <span>+98 - </span>
-                </div>
-              }
-            />
-          </Form.Item>
 
-          {sent && (
-            <>
-              <br className="loginPageLineBreak" />
+          <br className="loginPageLineBreak" />
 
-              <span>:کد ارسال شده </span>
-              <Form.Item
-                name="code"
-                layout="vertical"
-                style={{ width: "100%" }}
-              >
-                <Input.OTP length={5} />
-              </Form.Item>
-            </>
-          )}
-        </div>
-
-        <br className="loginPageLineBreak" />
-
-        <Button type="primary" block htmlType="submit" loading={loading}>
-          تایید
-        </Button>
-      </Form>
+          <Button type="primary" block htmlType="submit" loading={loading}>
+            تایید
+          </Button>
+        </Form>
       </div>
-      
     </div>
   );
 };
