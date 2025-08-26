@@ -34,7 +34,7 @@ const MainLayout: FC<iMainLayoutProps> = ({ children }) => {
   const handleMenuItemSelect: MenuProps["onSelect"] = ({ key }) => {
     closeDrawer();
     if (key === "logout") {
-      Cookies.remove('token');;
+      Cookies.remove("authToken", { domain: ".ferez.net" });
       navigate("/login");
       return;
     }
