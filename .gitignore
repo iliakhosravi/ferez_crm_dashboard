@@ -6,9 +6,17 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+package-lock.json
 
+# production
 node_modules
+Doc
+Packen.Theme
 dist
+dist-ssr
+build
+*.local
+
 dist-ssr
 *.local
 
