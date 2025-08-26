@@ -1,5 +1,6 @@
 import { message } from "antd";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL + import.meta.env.VITE_PATH,
@@ -11,7 +12,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const temp = config;
-    const access = localStorage.getItem("token");
+    const access = Cookies.get("token");
     if (access) {
       temp.headers.Authorization = `Bearer ${access}`;
     }

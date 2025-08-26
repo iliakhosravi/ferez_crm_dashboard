@@ -6,8 +6,8 @@ import { useUser } from "../hooks";
 import "../styles/loginPage.css";
 import LotilAnimation from '../assets/lotties/Animation - 1728726174132.json';
 import Lottie from 'react-lottie';
-
 import BG from '../assets/img/bg.png';
+import Cookies from "js-cookie";
 
  
 
@@ -19,7 +19,7 @@ const Login = () => {
   const { login, verify } = useUser();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     if (token) {
       navigate("/");
     }

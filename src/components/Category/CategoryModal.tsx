@@ -12,6 +12,7 @@ import {
 import { PlusOneOutlined } from "@mui/icons-material";
 import { FC, useEffect, useState } from "react";
 import useCategory, { iCategory } from "../../hooks/useCategory";
+import Cookies from "js-cookie";
 
 const CategoryModal: FC<{
   category: iCategory | null;
