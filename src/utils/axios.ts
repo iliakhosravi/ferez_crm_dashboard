@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL + import.meta.env.VITE_PATH,
+  baseURL: "https://service.ferez.net/api/service/v1",
   headers: {
     "Content-Type": "application/json",
   },
